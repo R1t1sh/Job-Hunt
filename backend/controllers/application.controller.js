@@ -115,6 +115,18 @@ export const updateStatus = async (req,res) => {
             })
         };
 
+        // Ensure that the status is valid according to your enum
+        const validStatuses = ['pending', 'rejected', 'accepted'];
+        if (!validStatuses.includes(status.toLowerCase())) {
+            return res.status(400).json({
+                message: "Invalid status value.",
+                success: false
+            });
+        }
+
+        console.log("Current status:", application.status);
+        console.log("Updating status to:", status.toLowerCase());
+
         // update the status
         application.status = status.toLowerCase();
         await application.save();
